@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		72C9B2862D7597C300606256 /* ElementQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElementQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		72C9B2862D7597C300606256 /* ElementQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = ElementQuiz.app; path = "/Users/SD/Documents/GitHub/ElementQuiz/build/Debug-iphoneos/ElementQuiz.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -46,16 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				72C9B2882D7597C300606256 /* ElementQuiz */,
-				72C9B2872D7597C300606256 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		72C9B2872D7597C300606256 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				72C9B2862D7597C300606256 /* ElementQuiz.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -108,7 +99,7 @@
 			mainGroup = 72C9B27D2D7597C300606256;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 72C9B2872D7597C300606256 /* Products */;
+			productRefGroup = 72C9B27D2D7597C300606256;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

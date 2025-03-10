@@ -1,51 +1,75 @@
-//
-//  ViewController.swift
-//  ElementQuiz
-//
-//  Created by SD on 03/03/2025.
-//
-
 import UIKit
-let elementList = ["Carbon", "Gold", "Chlorine", "Sodium"]
-var currentElementIndex = 0
 
-
-class ViewController: UIViewController {
-
-    @IBOutlet weak var modeSelector: UISegmentedControl!
-    enum Mode {
-        case flashCard
-        case quiz
-    }
-    var mode: Mode = .flashCard
-
-    @IBOutlet weak var textInput: UITextField!
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateElement()
-        // Do any additional setup after loading the view.
-    }
-    @IBAction func next(_ sender: Any) {
-        currentElementIndex += 1
-            if currentElementIndex >= elementList.count {
-                currentElementIndex = 0
-            }
-            updateElement()
-    }
-    @IBAction func showAnswer(_ sender: Any) {
-        answerLabel.text =
-           elementList[currentElementIndex]
-    }
-    @IBOutlet weak var answerLabel: UILabel!
-    @IBOutlet weak var elementImage: UIImageView!
-    func updateElement() {
-        let elementName =
-           elementList[currentElementIndex]
-        
-        let image = UIImage(named: elementName)
-        elementImage.image = image
-        answerLabel.text = "?"
-    }
-
+enum Mode {
+    case flashCard
+    case quiz
 }
 
+enum State {
+    case question
+    case answer
+}
+
+class ViewController: UIViewController, UITextFieldDelegate {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateFlashCardUI()
+    }
+    
+    @IBAction func modeSelector(_ sender: Any) {
+    }
+    @IBOutlet weak var answerLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    
+    let elementList = ["Carbon", "Gold", "Chlorine", "Sodium"]
+    var currentElementIndex = 0
+    var mode: Mode = .flashCard
+    var state: State = .question
+    var answerIsCorrect = false
+    var score = 0
+    
+    func updateUI() {
+        switch mode {
+        case .flashCard:
+            updateFlashCardUI()
+        case .quiz:
+            updateQuizUI()
+        }
+    }
+    
+    func updateFlashCardUI() {
+        let elementName = elementList[currentElementIndex]
+    
+        if let image = UIImage(named: elementName) {
+            imageView.image = image
+        }
+        
+        if state == .answer {
+            answerLabel.text =
+            elementList[currentElementIndex]
+            state = .question
+        } else {
+            answerLabel.text = "?"
+        }
+    }
+    
+    func updateQuizUI() {
+        
+    }
+    
+    @IBAction func showAnswerBtn(_ sender: Any) {
+        state = .answer
+        updateFlashCardUI()
+    }
+    
+    @IBAction func nextElementBtn(_ sender: Any) {
+        currentElementIndex += 1
+        if currentElementIndex >= elementList.count {
+            currentElementIndex = 0
+        }
+        
+        updateFlashCardUI()
+    }
+    
+}
