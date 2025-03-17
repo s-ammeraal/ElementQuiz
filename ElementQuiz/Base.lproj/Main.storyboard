@@ -33,7 +33,7 @@
                                     <segment title="Quiz"/>
                                 </segments>
                                 <connections>
-                                    <action selector="modeSelector:" destination="BYZ-38-t0r" eventType="valueChanged" id="cQd-sc-BX9"/>
+                                    <action selector="switchSelector:" destination="BYZ-38-t0r" eventType="valueChanged" id="3XF-tU-LOg"/>
                                 </connections>
                             </segmentedControl>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="05o-W0-AnN">
@@ -72,6 +72,8 @@
                     <connections>
                         <outlet property="answerLabel" destination="1QO-of-6FY" id="IPL-fh-HHJ"/>
                         <outlet property="imageView" destination="th6-3P-9gE" id="9fY-Pw-TYY"/>
+                        <outlet property="modeSelector" destination="Pvn-ew-rmY" id="ceV-5j-in2"/>
+                        <outlet property="textField" destination="05o-W0-AnN" id="YNC-zf-xih"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

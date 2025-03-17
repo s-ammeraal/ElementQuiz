@@ -14,37 +14,49 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateFlashCardUI()
+        updateUI()
     }
     
-    @IBAction func modeSelector(_ sender: Any) {
-    }
+    @IBOutlet weak var modeSelector: UISegmentedControl!
+    
+    
+    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
     let elementList = ["Carbon", "Gold", "Chlorine", "Sodium"]
     var currentElementIndex = 0
-    var mode: Mode = .flashCard
-    var state: State = .question
-    var answerIsCorrect = false
-    var score = 0
     
-    func updateUI() {
-        switch mode {
-        case .flashCard:
-            updateFlashCardUI()
-        case .quiz:
-            updateQuizUI()
+    var mode: Mode = .flashCard {
+        didSet {
+            updateUI()
         }
     }
+    var state: State = .question
     
-    func updateFlashCardUI() {
+    var answerIsCorrect = false
+    var score = 0
+
+    func updateUI() {
         let elementName = elementList[currentElementIndex]
     
         if let image = UIImage(named: elementName) {
             imageView.image = image
         }
         
+        switch mode {
+        case .flashCard:
+            
+            updateFlashCardUI(elementName: elementName)
+        case .quiz:
+            updateQuizUI(elementName: elementName)
+        }
+    }
+    
+    func updateFlashCardUI(elementName: String) {
+        textField.isHidden = true
+        textField.resignFirstResponder()
+
         if state == .answer {
             answerLabel.text =
             elementList[currentElementIndex]
@@ -54,13 +66,40 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func updateQuizUI() {
-        
+    func updateQuizUI(elementName: String) {
+        textField.isHidden = false
+
+        switch state {
+        case .question:
+            answerLabel.text = ""
+        case .answer:
+            if answerIsCorrect {
+                answerLabel.text = "Correct!"
+            } else {
+                answerLabel.text = "❌"
+            }
+        }
     }
+    
+    func textFieldShouldReturn(_ textField:
+       UITextField) -> Bool {
+        var textFieldContents = textField.text!
+        textFieldContents = textFieldContents.lowercased()
+        if  textFieldContents == elementList[currentElementIndex].lowercased(){
+            answerIsCorrect = true
+            score += 1
+        } else {
+            answerIsCorrect = false
+        }
+        state = .answer
+        updateUI()
+        return true
+    }
+    
     
     @IBAction func showAnswerBtn(_ sender: Any) {
         state = .answer
-        updateFlashCardUI()
+        updateUI()
     }
     
     @IBAction func nextElementBtn(_ sender: Any) {
@@ -69,7 +108,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
             currentElementIndex = 0
         }
         
-        updateFlashCardUI()
+        updateUI()
     }
+
     
+    @IBAction func switchSelector(_ sender: Any) {
+        if modeSelector.selectedSegmentIndex == 0 {
+            mode = .flashCard
+        } else {
+            mode = .quiz
+        }
+    }
 }
