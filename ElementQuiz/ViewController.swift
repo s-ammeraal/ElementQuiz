@@ -112,11 +112,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         currentElementIndex += 1
         if currentElementIndex >= elementList.count
            {
-            currentElementIndex = 0
             if mode == .quiz {
                 state = .score
                 updateUI()
                 return
+            } else {
+                currentElementIndex = 0
             }
         }
     }
