@@ -8,6 +8,7 @@ enum Mode {
 enum State {
     case question
     case answer
+    case score
 }
 
 class ViewController: UIViewController, UITextFieldDelegate {
@@ -46,7 +47,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         switch mode {
         case .flashCard:
-            
             updateFlashCardUI(elementName: elementName)
         case .quiz:
             updateQuizUI(elementName: elementName)
@@ -61,8 +61,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
             answerLabel.text =
             elementList[currentElementIndex]
             state = .question
-        } else {
+        } else if state == .question {
             answerLabel.text = "?"
+        } else {
+            answerLabel.text = ""
+            print("Your score is: \(score) out of \(elementList.count).")
         }
     }
     
@@ -78,6 +81,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
             } else {
                 answerLabel.text = "❌"
             }
+        case .score:
+            textField.isHidden = true
+            textField.resignFirstResponder()
         }
     }
     
@@ -104,11 +110,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func nextElementBtn(_ sender: Any) {
         currentElementIndex += 1
-        if currentElementIndex >= elementList.count {
+        if currentElementIndex >= elementList.count
+           {
             currentElementIndex = 0
+            if mode == .quiz {
+                state = .score
+                updateUI()
+                return
+            }
         }
-        
-        updateUI()
     }
 
     
