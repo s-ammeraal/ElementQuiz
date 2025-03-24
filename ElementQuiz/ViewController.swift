@@ -15,7 +15,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
+        mode = .flashCard
     }
     
     @IBOutlet weak var showAnswerButton: UIButton!
@@ -25,9 +25,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nextButton: UIButton!
 
-    let elementList = ["Carbon", "Gold", "Chlorine", "Sodium"]
-    var currentElementIndex = 0
+    let fixedElementList = ["Carbon", "Gold",
+       "Chlorine", "Sodium"]
+    var elementList: [String] = []
     
+    var currentElementIndex = 0
     var mode: Mode = .flashCard {
         didSet {
             switch mode {
@@ -45,10 +47,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var score = 0
 
     func setupFlashCards() {
+        elementList = fixedElementList
         state = .question
         currentElementIndex = 0
     }
     func setupQuiz() {
+        elementList = fixedElementList.shuffled()
         state = .question
         currentElementIndex = 0
         answerIsCorrect = false
