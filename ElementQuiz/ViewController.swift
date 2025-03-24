@@ -59,7 +59,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         score = 0
     }
 
-    
     func updateUI() {
         var elementName = ""
         if (currentElementIndex < elementList.count) {
