@@ -19,8 +19,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBOutlet weak var modeSelector: UISegmentedControl!
-    
-    
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -30,6 +28,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     var mode: Mode = .flashCard {
         didSet {
+            switch mode {
+            case .flashCard:
+                setupFlashCards()
+            case .quiz:
+                setupQuiz()
+            }
             updateUI()
         }
     }
@@ -38,6 +42,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var answerIsCorrect = false
     var score = 0
 
+    func setupFlashCards() {
+        state = .question
+        currentElementIndex = 0
+    }
+    func setupQuiz() {
+        state = .question
+        currentElementIndex = 0
+        answerIsCorrect = false
+        score = 0
+    }
+
+    
     func updateUI() {
         var elementName = ""
         if (currentElementIndex < elementList.count) {
