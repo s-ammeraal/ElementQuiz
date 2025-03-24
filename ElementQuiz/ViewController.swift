@@ -39,8 +39,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var score = 0
 
     func updateUI() {
-        let elementName = elementList[currentElementIndex]
-    
+        var elementName = ""
+        if (currentElementIndex < elementList.count) {
+            elementName = elementList[currentElementIndex]
+        }
+        
         if let image = UIImage(named: elementName) {
             imageView.image = image
         }
@@ -49,11 +52,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
         case .flashCard:
             updateFlashCardUI(elementName: elementName)
         case .quiz:
-            updateQuizUI(elementName: elementName)
+            if (currentElementIndex < elementList.count) {
+                updateQuizUI(elementName: elementName)
+            } else {
+                displayScoreAlert()
+            }
         }
     }
     
     func updateFlashCardUI(elementName: String) {
+        modeSelector.selectedSegmentIndex = 0
+
         textField.isHidden = true
         textField.resignFirstResponder()
 
@@ -70,8 +79,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func updateQuizUI(elementName: String) {
-        textField.isHidden = false
+        modeSelector.selectedSegmentIndex = 1
 
+        textField.isHidden = false
+        
         switch state {
         case .question:
             answerLabel.text = ""
@@ -84,6 +95,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         case .score:
             textField.isHidden = true
             textField.resignFirstResponder()
+            displayScoreAlert()
         }
     }
     
@@ -120,6 +132,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 currentElementIndex = 0
             }
         }
+        updateUI()
     }
 
     
@@ -130,4 +143,23 @@ class ViewController: UIViewController, UITextFieldDelegate {
             mode = .quiz
         }
     }
+    
+    func displayScoreAlert() {
+        let alert = UIAlertController(title:
+           "Quiz Score",
+           message: "Your score is \(score) out of \(elementList.count).",
+              preferredStyle: .alert)
+        let dismissAction =
+           UIAlertAction(title: "OK",
+           style: .default, handler:
+           scoreAlertDismissed(_:))
+        alert.addAction(dismissAction)
+        present(alert, animated: true,
+           completion: nil)
+    }
+    func scoreAlertDismissed(_ action: UIAlertAction) {
+        currentElementIndex = 0
+        mode = .flashCard
+    }
+    
 }
