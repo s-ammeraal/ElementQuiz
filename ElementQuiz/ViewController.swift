@@ -110,11 +110,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         switch state {
         case .question:
             textField.isEnabled = true
-            textField.text = ""
             textField.becomeFirstResponder()
         case .answer:
             textField.isEnabled = false
             textField.resignFirstResponder()
+            textField.text = ""
         case .score:
             textField.isHidden = true
             textField.resignFirstResponder()
