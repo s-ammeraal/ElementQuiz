@@ -111,37 +111,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         case .question:
             textField.isEnabled = true
             textField.becomeFirstResponder()
+            nextButton.isEnabled = false
+            answerLabel.text = ""
         case .answer:
             textField.isEnabled = false
             textField.resignFirstResponder()
             textField.text = ""
-        case .score:
-            textField.isHidden = true
-            textField.resignFirstResponder()
-        }
-        
-        showAnswerButton.isHidden = true
-        if currentElementIndex == elementList.count - 1 {
-            nextButton.setTitle("Show Score",
-               for: .normal)
-        } else {
-            nextButton.setTitle("Next Question",
-               for: .normal)
-        }
-        
-        switch state {
-        case .question:
-            nextButton.isEnabled = false
-        case .answer:
             nextButton.isEnabled = true
-        case .score:
-            nextButton.isEnabled = false
-        }
-        
-        switch state {
-        case .question:
-            answerLabel.text = ""
-        case .answer:
+            
             if answerIsCorrect {
                 answerLabel.text = "Correct!"
             } else {
@@ -151,7 +128,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
         case .score:
             textField.isHidden = true
             textField.resignFirstResponder()
+            nextButton.isEnabled = false
             displayScoreAlert()
+        }
+        
+        showAnswerButton.isHidden = true
+        if currentElementIndex == elementList.count - 1 {
+            nextButton.setTitle("Show Score",
+               for: .normal)
+        } else {
+            nextButton.setTitle("Next Question",
+               for: .normal)
         }
     }
     
