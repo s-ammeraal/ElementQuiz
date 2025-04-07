@@ -18,9 +18,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         mode = .flashCard
     }
     
+    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var showAnswerButton: UIButton!
     @IBOutlet weak var modeSelector: UISegmentedControl!
-    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nextButton: UIButton!
@@ -48,26 +48,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     func setupFlashCards() {
         elementList = fixedElementList
-        state = .question
+        state = .question
         currentElementIndex = 0
     }
     func setupQuiz() {
         elementList = fixedElementList.shuffled()
-        state = .question
+        state = .question
         currentElementIndex = 0
         answerIsCorrect = false
         score = 0
     }
 
     func updateUI() {
-        var elementName = ""
-        if (currentElementIndex < elementList.count) {
-            elementName = elementList[currentElementIndex]
-        }
-        
-        if let image = UIImage(named: elementName) {
-            imageView.image = image
-        }
+//        var elementName = ""
+        let elementName: String =  elementList[currentElementIndex]
+        let image = UIImage(named: elementName)
+        imageView.image = image
         
         switch mode {
         case .flashCard:
@@ -105,26 +101,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func updateQuizUI(elementName: String) {
         modeSelector.selectedSegmentIndex = 1
-        
         textField.isHidden = false
+        
         switch state {
         case .question:
             textField.isEnabled = true
+            textField.text = ""
             textField.becomeFirstResponder()
-            nextButton.isEnabled = false
-            answerLabel.text = ""
+
+
+//            nextButton.isEnabled = false
+//            nextButton.isHidden = true
+//            answerLabel.isHidden = true
+            
         case .answer:
             textField.isEnabled = false
             textField.resignFirstResponder()
-            textField.text = ""
-            nextButton.isEnabled = true
-            
-            if answerIsCorrect {
-                answerLabel.text = "Correct!"
-            } else {
-                answerLabel.text = "❌\nCorrect Answer: " +
-                   elementName
-            }
+           
+         
         case .score:
             textField.isHidden = true
             textField.resignFirstResponder()
@@ -132,13 +126,50 @@ class ViewController: UIViewController, UITextFieldDelegate {
             displayScoreAlert()
         }
         
+        switch state {
+        case .question:
+            answerLabel.text = ""
+            textField.resignFirstResponder()
+            
+        case .answer:
+            if answerIsCorrect {
+                answerLabel.text = "Correct!"
+                textField.resignFirstResponder()
+            } else {
+                answerLabel.text = "❌\nCorrect Answer: " +
+                   elementName
+            }
+        case .score:
+            textField.isHidden = true
+            textField.resignFirstResponder()
+            
+            answerLabel.text = ""
+            
+            if state == .score {
+                displayScoreAlert()
+            }
+        }
+        
+        //textField.text = ""
+        //answerLabel.text = ""
+        
         showAnswerButton.isHidden = true
+        
         if currentElementIndex == elementList.count - 1 {
             nextButton.setTitle("Show Score",
                for: .normal)
         } else {
             nextButton.setTitle("Next Question",
                for: .normal)
+        }
+        
+        switch state {
+        case .question:
+            nextButton.isEnabled = false
+        case .answer:
+            nextButton.isEnabled = true
+        case .score:
+            nextButton.isEnabled = false
         }
     }
     
@@ -164,9 +195,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func nextElementBtn(_ sender: Any) {
+        textField.text = ""
         currentElementIndex += 1
         if currentElementIndex >= elementList.count
            {
+            currentElementIndex = 0
             if mode == .quiz {
                 state = .score
                 updateUI()
@@ -175,6 +208,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 currentElementIndex = 0
             }
         }
+        state = .question
         updateUI()
     }
 
